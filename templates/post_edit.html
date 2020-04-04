@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block container %}
+<form class="form-horizontal" method="POST" action="/post/edit/">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="col-sm-1 control-label">标题</label>
+        <div class="col-sm-5">
+            <input class="form-control" type="text" name="title" value="{{post.title}}">
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <label class="col-sm-1 control-label">内容</label>
+        <div class="col-sm-11">
+            <textarea class="form-control" rows="20" name="content">{{post.content}}</textarea>
+        </div>
+    </div>
+
+    <input type="hidden" name="post_id" value="{{post.id}}">
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-6">
+            <button type="submit" class="btn btn-default" style="margin-left:613px; background:red; color:white">提交</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% comment %} 边栏 {% endcomment %}
+{% block sidebar %}
+<div class="well"  style="margin-left:50px">
+    <img src="{{post.author.avatar.url}}" height="80px" width="80px">
+    <br>
+    <br>
+    <table class="table">
+        <tr><td><strong>楼主：</strong>{{ post.author.nickname }}</td></tr>
+        <tr><td><strong>性别：</strong>{{ post.author.sex }}</td></tr>
+        <tr><td><strong>年龄：</strong>{{ post.author.age }}</td></tr>
+        <tr><td><strong>上次登录：</strong>{{ post.author.last_login }}</td></tr>
+    </table>
+</div>
+
+<div class="well" style="margin-left:50px">
+    <h4>我的发布</h4>
+    <table class="table">
+        {% for r_post in recent_posts %}
+        <tr><td><a href="/post/read/?post_id={{r_post.id}}">{{r_post.title}}</a></td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

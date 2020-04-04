@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% if error %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    {{ error }}
+</div>
+{% endif %}
+
+{% block container %}
+<div id="wrap">
+    <div id="top_content">
+        <div id="header">
+            <div class="topheader">
+                <h1 id="title">
+                    <!-- <strong>用户列表</strong> -->
+                    <span class="label label-warning">用户列表</span>
+                </h1>
+                <div class="rightheader" style="text-align: right;">
+                    <p><a href="/refresh/info/">刷新</a></p>
+                </div>
+                <hr align="left" width="730px" color:"black" size="1" />
+            </div>
+           
+        </div>
+
+        <div id="content">
+            <div class="bs-example" data-example-id="striped-table">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th><strong>序号</strong></th>
+                            <th><strong>昵称</strong></th>
+                            <th><strong>性别</strong></th>
+                            <th><strong>年龄</strong></th>
+                            <th><strong>注册时间</strong></th>
+                            <th><strong>最后登录时间</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for p in user%}
+                        <tr>
+                            <th scope="row">{{ p.id }}</th>
+                            <td><a href="/show/somebody/">{{ p.nickname }}</a></td>
+                            <td>{{ p.sex }}</td>
+                            <td>{{ p.age }}</td>
+                            <td>{{ p.created }}</td>
+                            <td>{{ p.last_login }}</td>
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <hr align="left" width="730px" color="black" size="2" />
+    <div id="footer">
+        <div id="footer_bg" style="text-align: center;">
+            yfaqh@19980623.com
+        </div>
+    </div>
+
+</div>
+{% endblock %}

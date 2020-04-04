@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block container %}
+    <div class="list-group">
+        <!-- 使用循环列出已经写出来的帖子 -->
+        {% for post in posts %}
+        <a class="list-group-item" href="/post/read/?post_id={{post.id}}">
+            <strong>{{post.title}}</strong>
+            <span class="text-info"><h4>{{post.created | date:"Y-m-d H:i:s"}}</h4></span>
+            <strong style="color:orangered; text-align: right;">楼主：{{post.author.nickname}}</strong>
+        </a>
+        {% empty %}
+        还没有人创建帖子，进行创建吧！
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block sidebar %}
+<div class="well" >
+    <div style="color:red">
+        <span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true" style="font-size:25px;"></span>
+        <font size=6;>排行</font>
+    </div>
+
+    <form class="form-horizontal" method="POST" action="/post/list/">
+        {% csrf_token %}
+        <div class="btn-group btn-group-justified" role="group" aria-label="checked">
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-primary " name="hot">最新发布</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-primary" name="hot_viewed">最热浏览</button>
+            </div>
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-primary" name="hot_commented">最热评论</button>
+            </div>
+        </div>
+    </form>
+    <br>
+    <div>
+        <ol>
+            {% for t_post in top_10 %}
+            <li>
+                <a href="/post/read/?post_id={{t_post.id}}">{{t_post.title}}</a>
+                <span class="pull-right">
+                {% if 'hot' == flag %}
+                <i class="glyphicon glyphicon-time text-right"></i>
+                {% endif %}
+
+                {% if 'hot_viewed' == flag %}
+                <i class="glyphicon glyphicon-eye-open text-right"></i> {{t_post.n_viewed}}
+                {% endif %}
+
+                {% if 'hot_commented' == flag %}
+                <i class="glyphicon glyphicon-comment text-right"></i> {{t_post.n_commented}}
+                {% endif %}
+                    
+                </span>
+            </li>
+            {% empty %}
+            <span>暂无数据</span>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+{% endblock %}

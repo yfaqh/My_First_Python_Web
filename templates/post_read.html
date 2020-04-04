@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block container %}
+
+{% if tip %}
+<div class="alert alert-info alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    来自网页的提示：<a href="/user/login/" class="alert-link" style="color:rgb(54, 54, 224)"> 登录 </a> 或 <a href="/user/register/" class="alert-link" style="color:rgb(54, 54, 224)"> 注册 </a>即可享受更多权限！
+    {{ tip }}
+</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    来自网页的提示：发帖前请先<a href="/user/login/" class="alert-link" style="color:red"> 登录 </a> 或 <a href="/user/register/" class="alert-link" style="color:red"> 注册 </a>！
+    {{ error }}
+</div>
+{% endif %}
+
+<h2>{{post.title}}</h2>
+
+<div>
+    作者：<strong style="color: red; font-size=[3]">{{ post.author.nickname }}</strong>&emsp;发帖时间：{{post.created | date:"Y-m-d H:i"}}&emsp;
+    <span class="pull-right">
+        <span class="glyphicon glyphicon-eye-open"></span> {{post.n_viewed}}
+        <span class="glyphicon glyphicon-comment"></span> {{post.n_commented}}
+    </span>
+    {% comment %} 判断当前用户是否帖子主人 {% endcomment %}
+    {% if request.session.uid == post.author.id %}
+    <a href="/post/edit/?post_id={{post.id}}">编辑</a>
+    <a href="/post/delete/?post_id={{post.id}}">删除</a>
+    {% endif %}
+</div>
+<hr>
+
+<p>
+    {{post.content | safe | escape | linebreaks}}
+</p>
+
+<hr>
+<form method="POST" action="/post/comment/">
+    {% csrf_token %}
+    <input type="hidden" name="post_id" value="{{post.id}}"><br>
+    <textarea name="content" cols="100" rows="4" placeholder="bb一下吧~"></textarea>
+    <br>
+    <!-- <input type="submit" name="评论"> -->
+    <button class="btn btn-default" style="margin-left:657px; background:red; color:white;" type="submit" >
+        发表评论
+    </button>
+</form>
+<hr>
+<div>
+    {% for comment in comments %}
+    <p>
+        <div><strong>姓名：</strong>{{comment.author.nickname}}</div>
+        <div><strong>时间：</strong>{{comment.created | date:"Y-m-d H:i"}}</div>
+        <div><strong>内容：</strong>{{comment.content|safe|escape|linebreaks}}</div>
+        <div>
+            {% ifequal comment.author.nickname user.nickname %}
+            <a href="/post/del_comment/?comment_id={{comment.id}}&post_id={{post.id}}">删除评论</a>
+            {% endifequal %}
+        </div>
+    </p>
+    {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% comment %} 边栏 {% endcomment %}
+{% block sidebar %}
+<div class="well"  style="margin-left:50px">
+    <img src="{{post.author.avatar.url}}" height="80px" width="80px">
+    <br>
+    <br>
+    <table class="table">
+        <tr><strong>楼主：</strong>{{ post.author.nickname }}</tr>
+        <br><br>
+        <tr><strong>性别：</strong>{{ post.author.sex }}</tr>
+        <br><br>
+        <tr><strong>B龄：</strong>{{ B_age }}年</tr>
+        <br><br>
+        <tr><strong>上次登录：</strong>{{ post.author.last_login }}</tr>
+    </table>
+</div>
+
+<div class="well" style="margin-left:50px">
+    <h4>最近发布</h4>
+    <hr>
+    <table class="table">
+        {% for r_post in recent_posts %}
+        <tr><a href="/post/read/?post_id={{r_post.id}}">{{r_post.title}}</a></tr>
+        <br><br>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

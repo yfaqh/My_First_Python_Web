@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block container %}
+
+{% if error %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    {{ error }}
+</div>
+{% endif %}
+
+<form class="form-horizontal" method="POST" action="/user/login/">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">昵称</label>
+        <div class="col-sm-5">
+            <input class="form-control" type="text" name="nickname">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">密码</label>
+        <div class="col-sm-5">
+            <input class="form-control" type="password" name="password">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">验证码</label>
+        <div class="col-sm-3">
+            <input class="form-control" type="text" name="verify">
+        </div>
+        <div>
+            <!-- <img class="value" id="yzm" src="/index/verification_code/" onclick="ChangeCode(this);"/> -->
+            <!-- <div>看不清，换一张</div> -->
+            <!-- <a href="/index/verification_code/" onclick="ChangeCode(this);">看不清，点击图片换一张</a> -->
+
+            <img id='yzm' src="/index/verification_code/"/>
+            <span id="change">
+                <a href="/show_verify/" >看不清楚，换一个</a>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-5">
+            <button type="submit" class="btn btn-default " style="margin-left:110px; background:red; color:white; width:50px;">登录</button>
+        </div>
+    </div>
+
+</form>
+
+<!-- <script>
+    function ChangeCode(ths) {
+        var src_re = $(ths).attr('src');
+        $(ths).attr('src', src_re + '?');
+    }
+</script>
+<script src="/statics/js/jquery.min.js"></script>
+<script src="/statics/js/bootstrap.min.js"></script> -->
+
+<hr>
+
+<div>
+    第三方登录：
+    <a href="/unfinish/">QQ登录</a>
+    <a href="/unfinish/">微博登录</a>
+</div>
+{% endblock %}

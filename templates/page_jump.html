@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>页面跳转中……</title>
+    </head>
+
+
+    <body style="background-image: url(http://img.xjh.me/random_img.php?type=bg&amp;ctype=nature&amp;return=302)">
+        {% if error %}
+        <div class="alert alert-link alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        {{ error }}
+        </div>
+        {% endif %}
+
+        <p align="center">
+            <b>
+                {{ action }}！还有<span id="sp" style="color:red">5</span>秒跳转到{{ page_name }}界面......
+            </b>
+        </p>
+        <script>
+            onload=function () {
+                setInterval(go,1000)
+            };
+            var x=4;
+            function go() {
+                if (x>=0){
+                    document.getElementById("sp").innerText=x;
+                } else {
+                    location.href="/user/login/";
+                }
+                x--;
+            }
+        </script>
+    </body>
+</html>

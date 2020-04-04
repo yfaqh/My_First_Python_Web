@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BB天下--留住热点，分享精彩！</title>
+
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/x-icon" href="/statics/img/favicon_B.ico">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/statics/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/statics/css/self.css">
+
+    <style type="text/css">
+        .site-icon { padding: 5px 10px 0 10px; }
+    </style>
+
+    <style>
+            .table th, .table td { 
+                text-align: center;
+                vertical-align: middle!important;
+            }
+    </style>
+
+    {% block ext_css %}{% endblock %}
+
+    <script>
+        $(function () {
+            // 添加点击事件 鼠标浮动时变成小手
+            $('#change').css('cursor', 'pointer').click(function () {
+                // 获取到图片的src路径  换一个新的路径   此代码相当与在原来的基础上增加数据
+                // $('#yzm').attr('src', $("#yzm").attr('src')+'?1')
+                $('#yzm').attr('src', $("#yzm").attr('src')+'?tm='+Math.random())
+               
+            })
+        })
+    </script>
+
+</head>
+
+<body style="background:peachpuff">
+<!-- <body style="background: url(http://img.xjh.me/random_img.php?type=bg&amp;ctype=nature&amp;return=302);background-size: cover;"> -->
+    <!-- Navbar -->
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand site-icon" href="/">
+                    <img src="/statics/img/apple-touch-icon-B.png" width="40px" height="40px">
+                </a>
+                <a class="navbar-brand" href="/" style="font-size: 25px;">BB天下</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/post/list/">首页</a></li>
+                <li><a>|</a></li>
+                <li><a href="/unfinish/">资讯</a></li>
+                <li><a>|</a></li>
+                <li><a href="/unfinish/">BB圈</a></li>
+                <li><a>|</a></li>
+                <li><a href="/unfinish/">发现</a></li>
+                <li><a>|</a></li>
+                <li><a href="/unfinish/">我的关注</a></li>
+                <li><a>|</a></li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        更多<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/unfinish/" target="blank">趣闻</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/unfinish/" target="blank">好友</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/unfinish/" target="blank">附近</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/post/create/">发表新帖</a></li>
+                {% if "uid" in request.session %}
+                    <li>
+                        <a href="/users/list/">用户列表</a>
+                    </li>
+                    <li><a href="/user/info/">Hello，<b>{{request.session.nickname}}</b></a></li>
+                    <li>
+                        <a class="navbar-brand" href="/user/info/">
+                            <img src="{{request.session.avatar}}" height="25px" width="25px">
+                        </a>
+                    </li>
+                    <li><a href="/user/logout/"><u>安全退出</u></a></li>
+                {% else %}
+                    <li><a href="/user/login/">登录</a></li>
+                    <li><a href="/user/register/">注册</a></li>
+                {% endif %}
+            </ul>
+
+            <div class="navbar-form navbar-right">
+                <form class="input-group" action="/unfinish/" method="POST"">
+                    {% csrf_token %}
+                    <input type="text" class="form-control" placeholder="搜BB天下" name="keyword" style="border-radius: 20px" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-link" name="search" title="搜一下">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </button>
+                    </span>
+                    
+                    {% comment %} <i class="fa"></i> {% endcomment %}
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </nav>
+
+    <script type="text/javascript" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>　
+
+    <div class="container">
+        <div class="col-md-8">{% block container %}{% endblock %}</div>
+        <div class="col-md-4">
+            
+
+                {% comment %} <hr> {% endcomment %}
+                {% block sidebar %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <script src="/statics/js/jquery.min.js"></script>
+    <script src="/statics/js/bootstrap.min.js"></script>
+    {% block ext_js %}{% endblock %}
+
+</body>
+</html>
